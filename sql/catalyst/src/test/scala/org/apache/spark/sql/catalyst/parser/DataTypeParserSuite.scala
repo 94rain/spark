@@ -149,6 +149,11 @@ class DataTypeParserSuite extends SparkFunSuite with SQLHelper {
     }
   }
 
+  test("Spark-40616") {
+    withSQLConf(SQLConf.LEGACY_EXPONENT_LITERAL_AS_DECIMAL_ENABLED.key -> False) {
+    assert(intercept("8.88888888888888888e9").getMessage.contains("set spark.sql.legacy.exponentLiteralAsDecimal.enabled to true"))
+    }
+  }
   // DataType parser accepts certain reserved keywords.
   checkDataType(
     "Struct<TABLE: string, DATE:boolean>",
